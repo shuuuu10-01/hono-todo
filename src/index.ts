@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
+import { cors } from "hono/cors";
 
 type Bindings = {
   DB: D1Database;
@@ -12,6 +13,8 @@ type Todo = {
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+app.use("*", cors());
 
 app.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
