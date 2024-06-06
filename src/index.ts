@@ -17,7 +17,7 @@ app.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
     `SELECT id, title FROM todo;`
   ).all<Todo>();
-  return c.json(results);
+  return c.json({ todo: results });
 });
 
 app.post(
