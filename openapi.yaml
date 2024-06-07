@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Subunit Todo API
+  version: 1.0.0
+servers:
+  - url: https://subunit_todo.koron-konan123.workers.dev/v1/api
+    description: 開発環境
+paths:
+  /:
+    get:
+      tags: 
+        - todo
+      summary: Todo一覧取得
+      description: Get all Todo
+      parameters: []
+      responses:
+        '200':
+          description: GET ALL
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  todo: 
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - title
+                      properties:
+                        id: 
+                          type: string
+                        title:
+                          type: string
+                example:
+                  todo: 
+                    - id: "1234567890"
+                      title: John Doe
+                    - id: "0987654321"
+                      title: Jane Doe
+  /todo:
+    post:
+      tags: 
+        - todo
+      summary: Todo作成
+      description: Create a new Todo
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+            example:
+              title: Create Todo
+      responses:
+        '201':
+          description: CREATED
+  /todo/{id}:
+    delete:
+      tags: 
+        - todo
+      summary: Todo削除
+      description: Delete a Todo
+      parameters:
+        - name: id
+          in: path
+          description: Todoのid
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: DELETED
