@@ -37,7 +37,7 @@ app.post(
     await c.env.DB.prepare(`INSERT INTO todo(id, title) VALUES(?, ?);`)
       .bind(id, title)
       .run();
-    c.status(200);
+    c.status(201);
     return c.body(null);
   }
 );
@@ -45,7 +45,7 @@ app.post(
 app.delete("/todo/:id", async (c) => {
   const id = c.req.param("id");
   await c.env.DB.prepare(`DELETE FROM todo WHERE id = ?;`).bind(id).run();
-  c.status(200);
+  c.status(201);
   return c.body(null);
 });
 
