@@ -6,11 +6,11 @@ servers:
   - url: https://subunit_todo.koron-konan123.workers.dev/v1/api
     description: 開発環境
 paths:
-  /:
+  /todo:
     get:
       tags: 
         - todo
-      summary: Todo一覧取得
+      summary: Todoを一覧取得
       description: Get all Todo
       parameters: []
       responses:
@@ -28,22 +28,26 @@ paths:
                       required:
                         - id
                         - title
+                        - completed
                       properties:
                         id: 
                           type: string
                         title:
                           type: string
+                        completed:
+                          type: boolean
                 example:
                   todo: 
                     - id: "1234567890"
                       title: John Doe
+                      completed: false
                     - id: "0987654321"
                       title: Jane Doe
-  /todo:
+                      completed: true
     post:
       tags: 
         - todo
-      summary: Todo作成
+      summary: Todoを作成
       description: Create a new Todo
       parameters: []
       requestBody:
@@ -62,10 +66,37 @@ paths:
         '201':
           description: CREATED
   /todo/{id}:
+    put:
+      tags: 
+        - todo
+      summary: Todoのタイトルを更新
+      description: Update Todo title
+      parameters:
+        - name: id
+          in: path
+          description: Todoのid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+            example:
+              title: Update Todo title
+      responses:
+        '201':
+          description: UPDATED
     delete:
       tags: 
         - todo
-      summary: Todo削除
+      summary: Todoを削除
       description: Delete a Todo
       parameters:
         - name: id
@@ -77,3 +108,31 @@ paths:
       responses:
         '201':
           description: DELETED
+  /todo/{id}/completed:
+    put:
+      tags: 
+        - todo
+      summary: Todoの完了済みフラグを更新
+      description: Update Todo completed
+      parameters:
+        - name: id
+          in: path
+          description: Todoのid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - completed
+              properties:
+                completed:
+                  type: boolean
+            example:
+              completed: true
+      responses:
+        '201':
+          description: UPDATED
