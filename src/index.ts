@@ -10,6 +10,7 @@ type Bindings = {
 type Todo = {
   title: string;
   id: string;
+  completed: 0 | 1;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -18,9 +19,12 @@ app.use("*", cors());
 
 app.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
-    `SELECT id, title FROM todo;`
+    `SELECT id, title, completed FROM todo;`
   ).all<Todo>();
-  return c.json({ todo: results });
+  const convert = results.map((r) => {
+    return { ...r, completed: !!r.completed };
+  });
+  return c.json({ todo: convert });
 });
 
 app.post(
