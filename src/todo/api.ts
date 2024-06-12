@@ -43,6 +43,25 @@ todo.post(
   }
 );
 
+todo.put(
+  "/:id",
+  zValidator(
+    "json",
+    z.object({
+      title: z.string().min(1),
+    })
+  ),
+  async (c) => {
+    const { title } = c.req.valid("json");
+    const id = c.req.param("id");
+    await c.env.DB.prepare(`UPDATE todo SET title = ? WHERE id = ?;`)
+      .bind(title, id)
+      .run();
+    c.status(201);
+    return c.body(null);
+  }
+);
+
 todo.delete("/:id", async (c) => {
   const id = c.req.param("id");
   await c.env.DB.prepare(`DELETE FROM todo WHERE id = ?;`).bind(id).run();
