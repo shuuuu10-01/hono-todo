@@ -119,4 +119,34 @@ todo.delete("/:id", async (c) => {
   return c.body(null);
 });
 
+/**
+ * PUT /:id/completed
+ * @summary Todoの完了済みフラグの更新
+ *
+ * @example
+ * // Request
+ * PUT /1234567890/completed
+ * {
+ *   "completed": true
+ * }
+ */
+todo.put(
+  "/:id/completed",
+  zValidator(
+    "json",
+    z.object({
+      completed: z.boolean(),
+    })
+  ),
+  async (c) => {
+    const { completed } = c.req.valid("json");
+    const id = c.req.param("id");
+    await c.env.DB.prepare(`UPDATE todo SET completed = ? WHERE id = ?;`)
+      .bind(completed ? 1 : 0, id)
+      .run();
+    c.status(201);
+    return c.body(null);
+  }
+);
+
 export default todo;
