@@ -14,6 +14,26 @@ type Todo = {
 
 const todo = new Hono<{ Bindings: Bindings }>();
 
+/**
+ * GET /
+ * @summary Todo一覧取得
+ *
+ * @example
+ * // Request
+ * GET /
+ *
+ * // Response
+ * {
+ *   todo: [
+ *     {
+ *       id: "1234567890",
+ *       title: "sample",
+ *       completed: false,
+ *     },
+ *     {...}
+ *   ],
+ * }
+ */
 todo.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
     `SELECT id, title, completed FROM todo;`
@@ -24,6 +44,17 @@ todo.get("/", async (c) => {
   return c.json({ todo: convert });
 });
 
+/**
+ * POST /
+ * @summary Todoの追加
+ *
+ * @example
+ * // Request
+ * POST /
+ * {
+ *   "title": "sample"
+ * }
+ */
 todo.post(
   "/",
   zValidator(
@@ -43,6 +74,17 @@ todo.post(
   }
 );
 
+/**
+ * PUT /:id
+ * @summary Todoの更新
+ *
+ * @example
+ * // Request
+ * PUT /1234567890
+ * {
+ *   "title": "sample"
+ * }
+ */
 todo.put(
   "/:id",
   zValidator(
@@ -62,6 +104,14 @@ todo.put(
   }
 );
 
+/**
+ * DELETE /:id
+ * @summary Todoの削除
+ *
+ * @example
+ * // Request
+ * DELETE /1234567890
+ */
 todo.delete("/:id", async (c) => {
   const id = c.req.param("id");
   await c.env.DB.prepare(`DELETE FROM todo WHERE id = ?;`).bind(id).run();
