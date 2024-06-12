@@ -76,7 +76,7 @@ todo.post(
 
 /**
  * PUT /:id
- * @summary Todoの更新
+ * @summary Todoのタイトルを更新
  *
  * @example
  * // Request
