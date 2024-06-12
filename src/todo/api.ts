@@ -16,7 +16,7 @@ const todo = new Hono<{ Bindings: Bindings }>();
 
 /**
  * GET /
- * @summary Todo一覧取得
+ * @summary Todoを一覧取得
  *
  * @example
  * // Request
@@ -46,7 +46,7 @@ todo.get("/", async (c) => {
 
 /**
  * POST /
- * @summary Todoの追加
+ * @summary Todoを追加
  *
  * @example
  * // Request
@@ -106,7 +106,7 @@ todo.put(
 
 /**
  * DELETE /:id
- * @summary Todoの削除
+ * @summary Todoを削除
  *
  * @example
  * // Request
@@ -121,7 +121,7 @@ todo.delete("/:id", async (c) => {
 
 /**
  * PUT /:id/completed
- * @summary Todoの完了済みフラグの更新
+ * @summary Todoの完了済みフラグを更新
  *
  * @example
  * // Request
